@@ -15,6 +15,7 @@ const suite = builder.testSuite().name('test');
 
 for (let i = 0; i < data.length; i++) { 
     for (info in data[i]) {
+
         if(data[i][info].fails && data[i][info].name) {
             suite.testCase().className(data[i][info].path).name(data[i][info].name).failure();
 
