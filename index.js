@@ -49,13 +49,4 @@ let setTestCaseData = (suite, checks) => {
     }
 }
 
-if (process.env.RAW) {
-    takeRAW();
-    return;
-}
 takeRAW();
-
-// or build empty report
-builder.testSuite().name('test');
-builder.writeTo('report.xml');
-console.log('Report generated.');
