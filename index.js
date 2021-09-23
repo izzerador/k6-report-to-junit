@@ -7,30 +7,6 @@ console.log('Parsing started....')
 const file = JSON.parse(fs.readFileSync(process.env.REPORT ? process.env.REPORT : 'result.json'));
 let data = file.root_group.groups;
 
-let takeSuitesFromSubgroups = () => {
-    for (el in data) {
-        // Main group
-        let mainGroup = data[el];
-    
-        console.log('tests count - '+ Object.keys(mainGroup.groups).length);
-    
-        for (let index = 0; index < Object.keys(mainGroup.groups).length; index++) {
-            // take the subgroup key (for suite)
-            let suiteName = Object.keys(mainGroup.groups)[index] ? Object.keys(mainGroup.groups)[index] : el;
-            // we need only checks objects from subgroups
-            let checks = jp.query(mainGroup.groups[suiteName], "$..checks");
-    
-            const suite = builder.testSuite().name(suiteName);
-            setTestCaseData(suite, checks)
-        }
-
-        builder.writeTo('report.xml');
-        console.log('Report generated.');
-    
-        return;
-    }
-}
-
 let takeRAW = () => {
     for (el in data) {
         let checks = jp.query(data[el], "$..checks");
@@ -74,13 +50,10 @@ let setTestCaseData = (suite, checks) => {
 }
 
 if (process.env.RAW) {
-    console.log('RAW data taking...');
-
     takeRAW();
     return;
 }
-
-takeSuitesFromSubgroups();
+takeRAW();
 
 // or build empty report
 builder.testSuite().name('test');
