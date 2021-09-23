@@ -4,21 +4,24 @@ const fs = require('fs');
 
 console.log('Parsing started....')
 
-const file = JSON.parse(fs.readFileSync(process.env.REPORT ? process.env.REPORT : 'result.json'));
-let data = file.root_group.groups;
+let file = JSON.parse(fs.readFileSync('result.json'));
+let checks = jp.query(file, "$..checks");
 
 let takeRAW = () => {
-    for (el in data) {
-        let checks = jp.query(data[el], "$..checks");
-        const suite = builder.testSuite().name(el);
-
-        setTestCaseData(suite, checks);
-
-        builder.writeTo('report.xml');
-        console.log('Report generated.');
+    for (let index = 0; index < checks.length; index++) {
+        const element = checks[index];
+        for (el in element) {
+            const suite = builder.testSuite().name(el);
     
-        return;
+            setTestCaseData(suite, checks);
+    
+            builder.writeTo('report.xml');
+            console.log('Report generated.');
+        
+            return;
+        }
     }
+
 }
 
 let setTestCaseData = (suite, checks) => {
