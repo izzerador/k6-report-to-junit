@@ -4,7 +4,7 @@ const fs = require('fs');
 
 console.log('Parsing started....')
 
-const file = JSON.parse(fs.readFileSync(process.env.REPORT ?? 'result.json'));
+const file = JSON.parse(fs.readFileSync(process.env.REPORT ? process.env.REPORT : 'result.json'));
 let data = file.root_group.groups;
 
 let takeSuitesFromSubgroups = () => {
@@ -16,14 +16,14 @@ let takeSuitesFromSubgroups = () => {
     
         for (let index = 0; index < Object.keys(mainGroup.groups).length; index++) {
             // take the subgroup key (for suite)
-            let suiteName = Object.keys(mainGroup.groups)[index] ?? el;
+            let suiteName = Object.keys(mainGroup.groups)[index] ? Object.keys(mainGroup.groups)[index] : el;
             // we need only checks objects from subgroups
             let checks = jp.query(mainGroup.groups[suiteName], "$..checks");
     
             const suite = builder.testSuite().name(suiteName);
             setTestCaseData(suite, checks)
         }
-        
+
         builder.writeTo('report.xml');
         console.log('Report generated.');
     
