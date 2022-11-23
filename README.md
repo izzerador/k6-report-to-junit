@@ -1,5 +1,5 @@
 # k6-report-to-junit
-## Sergey Ryzhkov | @kolesagroup | https://t.me/izzerador
+## Sergey Ryzhkov | https://t.me/izzerador
 
 k6 json report parser
 
